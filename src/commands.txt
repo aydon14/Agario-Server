@@ -1,0 +1,21 @@
+help: List of currently available commands.
+
+playerlist: Produce a list of clients currently connected to the server.
+
+minion [Player ID] [Number]: Give minions to a player.
+
+addbot [Number]: Add player bots to this server.
+
+rmbot [Number]: Remove bots from the server
+
+kick [Player ID]: Kick a client from the game
+
+killall: Remove all client cells from the game.
+
+mass [Player ID] [Number]: Set player mass
+
+exit: Exit the server.
+
+stats: Generate current server stats
+
+aliases: Generate command aliases.
