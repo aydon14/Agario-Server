@@ -1,4 +1,4 @@
-## Readme Updated 7/15/24
+## Readme Updated 7/16/24
 
 I'm going to keep things short because you only downloaded this to play it. This is a fork of Ardaninho's agario.fun server.
 
