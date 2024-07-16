@@ -1,7 +1,9 @@
 ## Readme Updated 7/15/24
 
 I'm going to keep things short because you only downloaded this to play it. This is a fork of Ardaninho's agario.fun server.
+
 https://github.com/Ardaninho/ArdaninhoAgarServer/
+
 I have been really interested in Agario private servers (yes, I'm stuck in 2015), and found this working server for agario.fun.
 I took this as an opportunity to learn more about networking protocols and JavaScript, and thought it would be a fun project.
 Now for the non-boring stuff! P.S. Please read the Installation!!!
