@@ -45,7 +45,7 @@ Google Chrome/Chromium browsers:
 1. In your browser, go to 'agario.fun', and click the lock icon in the URL, then click on 'Site settings'
 2. Under 'Permissions', set 'Insecure content' to Allow
 
-# NOTE
+NOTE:
 These settings allow insecure traffic (HTTP, like your server) over secure sites (HTTPS, like agario.fun).
 They could compromise browser/PC security. Make sure to revert these changes when the server isn't in use. 
 If you still can't connect to the server, check the console (F12 or corresponding key) and review other errors.
