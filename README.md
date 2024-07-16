@@ -28,14 +28,11 @@ Now for the non-boring stuff! P.S. Please read the Installation!!!
 4. Run './src/Install Dependencies.bat'
 5. Paste any config file from './Saved Configs' into './src/' folder AND rename file to 'config.ini' (If not done, the server will build a plain config.ini automatically)
 5. Run './src/Start.bat'
-6. Connect via 'https://agario.fun/?ip=127.0.0.1:<serverPort>' or 'https://agario.fun/?ip=localhost:<serverPort>'
-7. Congrats, your server works!
 
 # Multiplayer Installation
 
 1. Port forward your PC. This can be done by accessing your router (Usually via '192.168.1.1' in your browser) and allowing port forwarding to the ports you have your server set to. Tutorials are found online.
-2. Connect to your server via your public IP (can be found at 'https://www.whatismyip.com/') using https://agario.fun/?ip=<yourPublicIP>:<serverPort>. 
-3. If this fails, then you may have to change security settings in your browser. Instructions below:
+3. If your server connection fails, then you may have to change security settings in your browser. Instructions below:
 
 Firefox:
 1. Go to 'about:config' in the URL and search 'network.websocket.allowInsecureFromHTTPS' and set to True
@@ -48,4 +45,4 @@ Google Chrome/Chromium browsers:
 NOTE:
 These settings allow insecure traffic (HTTP, like your server) over secure sites (HTTPS, like agario.fun).
 They could compromise browser/PC security. Make sure to revert these changes when the server isn't in use. 
-If you still can't connect to the server, check the console (F12 or corresponding key) and review other errors.
+If you still can't connect to the server, check the console (F12 or corresponding key) and review errors.
