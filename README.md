@@ -27,8 +27,7 @@ Now for the non-boring stuff! P.S. Please read the Installation!!!
 1. Download the main code from GitHub.
 2. Extract into separate folder.
 3. Install node.js: 'https://nodejs.org/'
-4. Run './src/Install Dependencies.bat'
-5. Paste any config file from './Saved Configs' into './src/' folder AND rename file to 'config.ini' (If not done, the server will build a plain config.ini automatically)
+4. Paste any config file from './Saved Configs' into './src/' folder AND rename file to 'config.ini' (If not done, the server will build a plain config.ini automatically)
 5. Run './src/Start.bat'
 
 # Multiplayer Installation
