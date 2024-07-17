@@ -15,7 +15,7 @@ class Virus extends Cell {
         More Noticable Color */
         this.color = {
             r: 0x38,
-            g: 0x76,
+            g: 0xc8,
             b: 0x1d
         };
 
