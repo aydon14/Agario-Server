@@ -1,0 +1,10 @@
+{
+    "name": "private-agario-server",
+    "version": "1.0.0",
+    "description": "Open source Agario Server",
+    "author": "aydon14 (https://github.com/aydon14)",
+    "main": "src/index.js",
+    "dependencies": {
+        "ws": "latest"
+    }
+}

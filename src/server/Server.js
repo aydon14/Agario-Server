@@ -132,13 +132,13 @@ class Server {
         setTimeout(this.timerLoopBind, 1);
         // Logging
         Logger.info("The gamemode is " + this.mode.name);
-        Logger.info("Join game via:");
-        Logger.info(`https://agario.fun/?ip=127.0.0.1:${this.config.serverPort} (Singleplayer)`);
+        Logger.info("Join game using:");
+        Logger.info(`ws://127.0.0.1:${this.config.serverPort} (Singleplayer)`);
         // Log public-IP join link
         await new Promise((resolve, reject) => {
             const req = http.get({'host': 'api.ipify.org', 'port': 80, 'path': '/', 'timeout': 3000}, (resp) => {
                 resp.on('data', (ip) => {
-                    Logger.info(`https://agario.fun/?ip=${ip}:${this.config.serverPort} (Multiplayer)`);
+                    Logger.info(`ws://${ip}:${this.config.serverPort} (Multiplayer/Port Forwarding)`);
                     resolve();
                 });
             });
@@ -194,7 +194,7 @@ class Server {
                 Logger.error("Please close out of Skype or change 'serverPort' in the config to a different number.");
                 break;
             case "EACCES":
-                Logger.error("Please make sure you are running ArdaninhoAgarServ with root privileges.");
+                Logger.error("Please make sure you are running the server with root privileges.");
                 break;
             default:
                 Logger.error("Error code not handled: " + error.code + " - " + error.message)
