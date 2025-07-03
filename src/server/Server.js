@@ -81,6 +81,7 @@ class Server {
             playerMinEjectSize: 59.16079783,
             playerStartSize: 31.6227766017,
             playerMaxCells: 16,
+            playerRigidCells: 1,
             playerSpeed: 1,
             playerDecayRate: 0.002,
             playerDecayCap: 0,
@@ -598,26 +599,44 @@ class Server {
             p: p // check - cell position
         };
     }
-    // Checks if collision is rigid body collision
+
     checkRigidCollision(m) {
-        if (!m.cell.owner || !m.check.owner)
-            return false;
-        if (m.cell.owner != m.check.owner) {
-            // Minions don't collide with their team when the config value is 0
-            if (this.mode.haveTeams && m.check.owner.isMi || m.cell.owner.isMi && this.config.minionCollideTeam === 0) {
+        if (this.config.playerRigidCells === 1) { // Old rigid cell system
+            if (!m.cell.owner || !m.check.owner)
                 return false;
+            if (m.cell.owner != m.check.owner) {
+                // Minions don't collide with their team when the config value is 0
+                if (this.mode.haveTeams && m.check.owner.isMi || m.cell.owner.isMi && this.config.minionCollideTeam === 0) {
+                    return false;
+                }
+                else {
+                    // Different owners => same team
+                    return this.mode.haveTeams &&
+                        m.cell.owner.team == m.check.owner.team;
+                }
             }
-            else {
-                // Different owners => same team
-                return this.mode.haveTeams &&
-                    m.cell.owner.team == m.check.owner.team;
+            var r = this.config.mobilePhysics ? 1 : 13;
+            if (m.cell.getAge() < r || m.check.getAge() < r) {
+                return false; // just splited => ignore
+            } 
+            return !m.cell._canRemerge || !m.check._canRemerge;
+        } else { // New rigid cell system
+            if (!m.cell.owner || !m.check.owner)
+                return false;
+
+            // Allow same-player cells to freely overlap (no rigid push)
+            if (m.cell.owner === m.check.owner)
+                return false;
+
+            // Handle team-based rigid collision
+            if (this.mode.haveTeams) {
+                if ((m.cell.owner.isMi || m.check.owner.isMi) && this.config.minionCollideTeam === 0)
+                    return false;
+                return m.cell.owner.team === m.check.owner.team;
             }
+
+            return false;
         }
-        var r = this.config.mobilePhysics ? 1 : 13;
-        if (m.cell.getAge() < r || m.check.getAge() < r) {
-            return false; // just splited => ignore
-        }
-        return !m.cell._canRemerge || !m.check._canRemerge;
     }
     // Resolves rigid body collisions
     resolveRigidCollision(m) {
