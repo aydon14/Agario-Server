@@ -80,7 +80,7 @@ class Virus extends Cell {
     }
     explodeCell(cell, splits) {
         for (var i = 0; i < splits.length; i++)
-            this.server.splitPlayerCell(cell.owner, cell, 2 * Math.PI * Math.random(), splits[i], this.server.config.explodeVelocity);
+            this.server.queueSplitCell(cell.owner, cell, 2 * Math.PI * Math.random(), splits[i], this.server.config.explodeVelocity);
     }
     onAdd(server) {
         server.nodesVirus.push(this);

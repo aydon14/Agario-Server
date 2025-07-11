@@ -104,8 +104,8 @@ class CommandsList {
 
     addbot(server, args) {
         const amount = parseInt(args[1]) || 1;
+        server.config.serverBots += amount;
 
-        // Add the provide amount of bots to the server.
         for (let i = 0; i != amount; i++) {
             server.bots.addBot();
         };
@@ -115,18 +115,37 @@ class CommandsList {
 
     rmbot(server, args) {
         const amount = parseInt(args[1]) || server.clients.length;
-        let total = 0;
+        const botClients = server.clients
+            .filter(socket => socket.playerTracker?.isBot)
+            .sort((a, b) => {
+                const getNumber = name => parseInt(name?.split(" ")[1]) || 0;
+                return getNumber(b.playerTracker._name) - getNumber(a.playerTracker._name);
+            });
 
-        server.clients.forEach(socket => {
+        const toRemove = botClients.slice(0, amount);
+        let removed = 0;
+        for (const socket of toRemove) {
             const client = socket.playerTracker;
-            if(!socket.isConnected && total <= amount) {
-                socket.close()
-                return total++;
-            };
-        });
+            if (typeof socket._botId === "number") {
+                server.bots.releaseBotId(socket._botId);
+            }
+            if (client?.cells?.length) {
+                while (client.cells.length) {
+                    const cell = client.cells[0];
+                    server.removeNode(cell);
+                }
+            }
+            client.isRemoved = true;
+            const index = server.clients.indexOf(socket);
+            if (index !== -1) server.clients.splice(index, 1);
+            if (socket._socket?.destroy) socket._socket.destroy();
+            socket.close();
 
-        return Logger.success(`Removed a total ${total} bots out of the requested amount of ${amount}.`)
-    };
+            removed++;
+            server.config.serverBots = Math.max(server.config.serverBots - 1, 0);
+        }
+        return Logger.success(`Removed ${removed} bot${removed !== 1 ? "s" : ""} from the server.`);
+    }
 
     kick(server, args) {
         const ID = parseInt(args[1]) || args[1];

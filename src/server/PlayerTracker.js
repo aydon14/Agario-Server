@@ -11,7 +11,7 @@ class PlayerTracker {
         this.userAuth = null;
         this.isRemoved = false;
         this.isCloseRequested = false;
-        this._name = "exe";
+        this._name = "Unnamed";
         this._skin = "";
         this._nameUtf8 = null;
         this._skinUtf8protocol11 = null;
@@ -37,6 +37,8 @@ class PlayerTracker {
         this.viewBox = new Quad(0, 0, 0, 0);
         this.scrambleX = 0;
         this.scrambleY = 0;
+        // Lag fix
+        this.pendingSplits = [];
         // Custom commands
         this.spawnmass = 0;
         this.frozen = false;

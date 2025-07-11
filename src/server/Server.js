@@ -49,7 +49,6 @@ class Server {
             serverMaxConnections: 500,
             serverPort: 443,
             serverGamemode: 0,
-            serverBots: 0,
             serverRestart: 0,
             serverColorSystem: 0,
             serverMaxLB: 10,
@@ -64,11 +63,13 @@ class Server {
             virusMaxPoppedSize: 60,
             virusEqualPopSize: 0,
             virusAmount: 50,
-            virusMaxAmount: 100,
             motherCellMaxMass: 0,
             virusVelocity: 780,
             virusMaxCells: 0,
             explodeVelocity: 780,
+            serverBots: 0,
+            botsAvoidViruses: 1,
+            botsCanSplit: 1,
             ejectSize: 36.06,
             ejectSizeLoss: 42.43,
             ejectCooldown: 3,
@@ -87,7 +88,6 @@ class Server {
             playerDecayCap: 0,
             playerRecombineTime: 30,
             playerDefaultName: "Unnamed Cell",
-            playerDisconnectTime: -1,
             playerBotGrow: 0,
             splitVelocity: 780,
             minionStartSize: 31.6227766017,
@@ -353,10 +353,9 @@ class Server {
                             {r:  80, g: 245, b:   0},
                             {r: 165, g:  25, b:   0},
                             {r:  80, g: 145, b:   0},
-                            {r:  80, g: 170, b: 240},
                             {r:  55, g:  92, b: 255}
                         ],
-                        color = choices[Math.floor(Math.random() * 12)];
+                        color = choices[Math.floor(Math.random() * 11)];
                     return {
                         r: color.r,
                         g: color.g,
@@ -507,6 +506,19 @@ class Server {
         if (!this.run && this.mode.IsTournament)
             this.ticks++;
         this.updateClients();
+        // Resolve virus splits efficiently & reduce lag
+        for (const ws of this.clients) {
+            const client = ws.playerTracker;
+            if (!client.pendingSplits?.length) continue;
+
+            const maxSplitsPerTick = 100;
+            let i = 0;
+
+            while (i++ < maxSplitsPerTick && client.pendingSplits.length) {
+                const { parent, angle, mass, velocity } = client.pendingSplits.shift();
+                this.splitPlayerCell(client, parent, angle, mass, velocity);
+            }
+        }
         // update leaderboard
         if (((this.ticks + 7) % 25) === 0)
             this.updateLeaderboard(); // once per second
@@ -693,6 +705,9 @@ class Server {
         var newCell = new Entity.PlayerCell(this, client, parent.position, size);
         newCell.setBoost(velocity * Math.pow(size, 0.0122), angle);
         this.addNode(newCell);
+    }
+    queueSplitCell(client, parent, angle, mass, velocity) {
+        client.pendingSplits.push({ parent, angle, mass, velocity });
     }
     randomPos() {
         return new Vec2(this.border.minx + this.border.width * Math.random(),
